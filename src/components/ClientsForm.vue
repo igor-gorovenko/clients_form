@@ -3,7 +3,7 @@
 		<div class="container">
 			<form class="create-new-client" @submit.prevent="createClients">
 				<h1 class="title">Создание нового пользователя</h1>
-				<h3 class="title">Атрибуты формы</h3>
+				<h3 class="title">Основная информация</h3>
 				<div class="user-details">
 					<div class="form-group">
 						<label for="last-name">Фамилия*</label>
@@ -20,13 +20,19 @@
 						>
 							Обязательное поле!
 						</p>
+						<p
+							v-if="$v.form.lastName.$dirty && !$v.form.lastName.minLength"
+							class="invalid-feedback"
+						>
+							Здесь должно быть 3 или более символов!
+						</p>
 					</div>
 
 					<div class="form-group">
 						<label for="first-name">Имя*</label>
 						<input
 							id="first-name"
-							class="form-control is-invalid"
+							class="form-control"
 							:class="$v.form.firstName.$error ? 'is-invalid' : ''"
 							type="text"
 							v-model.trim="$v.form.firstName.$model"
@@ -41,7 +47,7 @@
 							v-if="$v.form.firstName.$dirty && !$v.form.firstName.minLength"
 							class="invalid-feedback"
 						>
-							Здесь должно быть больше 5-им символов!
+							Здесь должно быть 3 или более символов!
 						</p>
 					</div>
 
@@ -50,12 +56,23 @@
 						<input
 							id="middle-name"
 							class="form-control"
-							:class="$v.form.middleName.$error ? 'is-invalid' : ''"
 							type="text"
-							v-model.trim="$v.form.middleName.$model"
+							v-model.trim="form.middleName"
 						/>
+					</div>
+
+					<div class="form-group">
+						<label for="date-birthd">Дата рождения*</label>
+						<input
+							id="date-birthd"
+							class="form-control"
+							:class="$v.form.dateBirthd.$error ? 'is-invalid' : ''"
+							type="date"
+							v-model.trim="$v.form.dateBirthd.$model"
+						/>
+
 						<p
-							v-if="$v.form.middleName.$dirty && !$v.form.middleName.required"
+							v-if="$v.form.dateBirthd.$dirty && !$v.form.dateBirthd.required"
 							class="invalid-feedback"
 						>
 							Обязательное поле!
@@ -63,13 +80,34 @@
 					</div>
 
 					<div class="form-group">
-						<label for="">Дата рождения*</label>
-						<input class="form-control" type="date" />
-					</div>
-
-					<div class="form-group">
-						<label for="">Номер телефона*</label>
-						<input class="form-control" type="number" />
+						<label for="mobile-number">Номер телефона*</label>
+						<input
+							id="mobile-number"
+							class="form-control"
+							:class="$v.form.mobileNumber.$error ? 'is-invalid' : ''"
+							type="number"
+							v-model.trim="$v.form.mobileNumber.$model"
+						/>
+						<p
+							v-if="$v.form.mobileNumber.$dirty && !$v.form.mobileNumber.required"
+							class="invalid-feedback"
+						>
+							Обязательное поле!
+						</p>
+						<p
+							v-if="$v.form.mobileNumber.$dirty && !$v.form.mobileNumber.minLength"
+							class="invalid-feedback"
+						>
+							Номер должен начинаться с '+7' <br />
+							и содержать 11 цифр.
+						</p>
+						<p
+							v-if="$v.form.mobileNumber.$dirty && !$v.form.mobileNumber.maxLength"
+							class="invalid-feedback"
+						>
+							Номер должен начинаться с '+7' <br />
+							и содержать не более 11 цифр.
+						</p>
 					</div>
 
 					<label for="">Пол</label>
@@ -82,12 +120,15 @@
 					</div>
 
 					<div class="form-group">
-						<label for="client">Группа клиентов*</label>
+						<label for="client">Группа клиентов* </label>
+
 						<select id="client" class="form-control" v-model="form.yourClients" multiple>
 							<option v-for="(client, index) in clients" :key="index">
 								{{ client.label }}
 							</option>
 						</select>
+
+						<p>(Можно выбрать несколько.)</p>
 					</div>
 
 					<div class="form-group">
@@ -99,16 +140,12 @@
 						</select>
 					</div>
 
-					<div class="form-group">
-						<input id="checkbox" type="checkbox" v-model="form.agreeWithDontSendMessages" />
-						<label class="label" for="checkbox">Не отправлять СМС</label>
-					</div>
-
 					<h3 class="title">Адрес</h3>
 
 					<div class="form-group">
 						<label for="index-number">Индекс</label>
 						<input id="index-number" type="number" class="form-control" />
+						<p></p>
 					</div>
 
 					<div class="form-group">
@@ -123,7 +160,25 @@
 
 					<div class="form-group">
 						<label for="city">Город*</label>
-						<input id="city" type="text" class="form-control" />
+						<input
+							id="city"
+							class="form-control"
+							:class="$v.form.yourCity.$error ? 'is-invalid' : ''"
+							type="text"
+							v-model.trim="$v.form.yourCity.$model"
+						/>
+						<p
+							v-if="$v.form.yourCity.$dirty && !$v.form.yourCity.required"
+							class="invalid-feedback"
+						>
+							Обязательное поле!
+						</p>
+						<p
+							v-if="$v.form.yourCity.$dirty && !$v.form.yourCity.minLength"
+							class="invalid-feedback"
+						>
+							Здесь должно быть 5 или более символов!
+						</p>
 					</div>
 
 					<div class="form-group">
@@ -140,7 +195,12 @@
 
 					<div class="form-group">
 						<label for="type-document">Тип документа*</label>
-						<select id="type-document" class="form-control" />
+
+						<select id="type-document" class="form-control" v-model="form.typeDocument">
+							<option v-for="(typeDocument, index) in documents" :key="index">
+								{{ typeDocument.label }}
+							</option>
+						</select>
 					</div>
 
 					<div class="form-group">
@@ -159,13 +219,36 @@
 					</div>
 
 					<div class="form-group">
-						<label for="house">Дата выдачи*</label>
-						<input id="house" type="text" class="form-control" />
+						<label for="issue-date">Дата выдачи*</label>
+						<input
+							id="issue-date"
+							class="form-control"
+							:class="$v.form.iddueDate.$error ? 'is-invalid' : ''"
+							type="date"
+							v-model.trim="$v.form.iddueDate.$model"
+						/>
+
+						<p
+							v-if="$v.form.iddueDate.$dirty && !$v.form.iddueDate.required"
+							class="invalid-feedback"
+						>
+							Обязательное поле!
+						</p>
 					</div>
 
 					<p>*Поле обязательное для заполнения.</p>
 				</div>
+
+				<div class="form-group">
+					<input id="checkbox" type="checkbox" v-model="form.agreeWithDontSendMessages" />
+					<label class="label" for="checkbox">Не отправлять СМС</label>
+				</div>
+
 				<button type="submit" class="button">Создать аккаунт</button>
+
+				<p v-if="$v.form.iddueDate.$dirty && !this.$v.form.$error">
+					Клиент успешно создан!
+				</p>
 			</form>
 		</div>
 	</div>
@@ -173,7 +256,7 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, minLength } from 'vuelidate/lib/validators'
+import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
 export default {
 	mixins: [validationMixin],
@@ -183,11 +266,31 @@ export default {
 				firstName: '',
 				lastName: '',
 				middleName: '',
+				dateBirthd: '',
 				doctor: 'Ivanov',
 				yourClients: ['VIP'],
 				agreeWithDontSendMessages: false,
 				gendere: 'male',
+				mobileNumber: '',
+				typeDocument: 'Паспорт',
+				yourCity: '',
+				iddueDate: '',
 			},
+
+			documents: [
+				{
+					label: 'Паспорт',
+					value: 'Passport',
+				},
+				{
+					label: 'Свидетельство о рождении',
+					value: 'Birth certificate',
+				},
+				{
+					label: 'Водительское удостоверение',
+					value: 'Driver is license',
+				},
+			],
 
 			doctors: [
 				{
@@ -203,6 +306,7 @@ export default {
 					value: 'Chernysheva',
 				},
 			],
+
 			clients: [
 				{
 					label: 'VIP',
@@ -223,10 +327,32 @@ export default {
 		form: {
 			firstName: {
 				required,
-				minLength: minLength(4),
+				minLength: minLength(3),
 			},
-			lastName: { required },
-			middleName: { required },
+
+			lastName: {
+				required,
+				minLength: minLength(3),
+			},
+
+			dateBirthd: {
+				required,
+			},
+
+			mobileNumber: {
+				required,
+				minLength: minLength(11),
+				maxLength: maxLength(11),
+			},
+
+			yourCity: {
+				required,
+				minLength: minLength(5),
+			},
+
+			iddueDate: {
+				required,
+			},
 		},
 	},
 	methods: {
@@ -242,7 +368,7 @@ export default {
 
 <style scoped>
 * {
-	font-size: 18px;
+	font-size: 1em;
 	line-height: 133%;
 	margin: 0;
 	padding: 0;
@@ -274,10 +400,10 @@ h3 {
 .container .title {
 	font-size: 32;
 	font-weight: 500;
-	position: relative;
 }
 
 .form-group {
+	font-size: 1.2em;
 	width: 100%;
 	margin: 8px 0 32px 0;
 }
@@ -300,10 +426,6 @@ h3 {
 	border: none;
 }
 
-.form-control.is-invalid {
-	border-color: red;
-}
-
 .form-group .form-control {
 	width: 100%;
 	background: none;
@@ -324,8 +446,16 @@ h3 {
 	background: cornflowerblue;
 }
 
+.form-group p {
+	margin: 8px 0 0 0;
+	font-size: 1em;
+}
+
 .invalid-feedback {
 	color: red;
-	margin: 8px 0 0 0;
+}
+
+.form-group .is-invalid {
+	border-color: red;
 }
 </style>
