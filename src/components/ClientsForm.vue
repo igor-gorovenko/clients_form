@@ -1,24 +1,48 @@
 <template>
 	<div class="main">
 		<div class="container">
-			<form class="create-new-client" @submit="createClients">
+			<form class="create-new-client" @submit.prevent="createClients">
 				<h1 class="title">Создание нового пользователя</h1>
 				<h3 class="title">Атрибуты формы</h3>
 				<div class="user-details">
 					<div class="form-group">
-						<label for="last-name">Фамилия</label>
-						<input id="last-name" class="form-control" v-model.trim="form.lastName" />
+						<label for="last-name">Фамилия*</label>
+						<input
+							id="last-name"
+							class="form-control"
+							:class="$v.form.lastName.$error ? 'is-invalid' : ''"
+							type="text"
+							v-model.trim="$v.form.lastName.$model"
+						/>
+						<p
+							v-if="$v.form.lastName.$dirty && !$v.form.lastName.required"
+							class="invalid-feedback"
+						>
+							Обязательное поле!
+						</p>
 					</div>
 
 					<div class="form-group">
-						<label for="first-name">Имя</label>
+						<label for="first-name">Имя*</label>
 						<input
 							id="first-name"
 							class="form-control is-invalid"
+							:class="$v.form.firstName.$error ? 'is-invalid' : ''"
 							type="text"
-							v-model.trim="form.firstName"
+							v-model.trim="$v.form.firstName.$model"
 						/>
-						<p class="invalid-feedback">Error</p>
+						<p
+							v-if="$v.form.firstName.$dirty && !$v.form.firstName.required"
+							class="invalid-feedback"
+						>
+							Обязательное поле!
+						</p>
+						<p
+							v-if="$v.form.firstName.$dirty && !$v.form.firstName.minLength"
+							class="invalid-feedback"
+						>
+							Здесь должно быть больше 5-им символов!
+						</p>
 					</div>
 
 					<div class="form-group">
@@ -26,18 +50,25 @@
 						<input
 							id="middle-name"
 							class="form-control"
+							:class="$v.form.middleName.$error ? 'is-invalid' : ''"
 							type="text"
-							v-model.trim="form.middleName"
+							v-model.trim="$v.form.middleName.$model"
 						/>
+						<p
+							v-if="$v.form.middleName.$dirty && !$v.form.middleName.required"
+							class="invalid-feedback"
+						>
+							Обязательное поле!
+						</p>
 					</div>
 
 					<div class="form-group">
-						<label for="">Дата рождения</label>
-						<input class="form-control" type="text" />
+						<label for="">Дата рождения*</label>
+						<input class="form-control" type="date" />
 					</div>
 
 					<div class="form-group">
-						<label for="">Номер телефона</label>
+						<label for="">Номер телефона*</label>
 						<input class="form-control" type="number" />
 					</div>
 
@@ -51,7 +82,7 @@
 					</div>
 
 					<div class="form-group">
-						<label for="client">Группа клиентов</label>
+						<label for="client">Группа клиентов*</label>
 						<select id="client" class="form-control" v-model="form.yourClients" multiple>
 							<option v-for="(client, index) in clients" :key="index">
 								{{ client.label }}
@@ -73,8 +104,68 @@
 						<label class="label" for="checkbox">Не отправлять СМС</label>
 					</div>
 
-					<button class="button">Создать аккаунт</button>
+					<h3 class="title">Адрес</h3>
+
+					<div class="form-group">
+						<label for="index-number">Индекс</label>
+						<input id="index-number" type="number" class="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label for="country">Страна</label>
+						<input id="country" type="text" class="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label for="region">Область</label>
+						<input id="region" type="text" class="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label for="city">Город*</label>
+						<input id="city" type="text" class="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label for="street">Улица</label>
+						<input id="street" type="text" class="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label for="house">Дом</label>
+						<input id="house" type="text" class="form-control" />
+					</div>
+
+					<h3 class="title">Паспорт</h3>
+
+					<div class="form-group">
+						<label for="type-document">Тип документа*</label>
+						<select id="type-document" class="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label for="house">Серия</label>
+						<input id="house" type="text" class="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label for="house">Номер</label>
+						<input id="house" type="text" class="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label for="house">Кем выдан</label>
+						<input id="house" type="text" class="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label for="house">Дата выдачи*</label>
+						<input id="house" type="text" class="form-control" />
+					</div>
+
+					<p>*Поле обязательное для заполнения.</p>
 				</div>
+				<button type="submit" class="button">Создать аккаунт</button>
 			</form>
 		</div>
 	</div>
@@ -132,7 +223,7 @@ export default {
 		form: {
 			firstName: {
 				required,
-				minLength: minLength(5),
+				minLength: minLength(4),
 			},
 			lastName: { required },
 			middleName: { required },
@@ -140,8 +231,8 @@ export default {
 	},
 	methods: {
 		createClients() {
-			this.$v.form.touch()
-			if (this.$v.form.$error) {
+			this.$v.form.$touch()
+			if (!this.$v.form.$error) {
 				console.log('Валидация прошла успешно')
 			}
 		},
@@ -172,11 +263,12 @@ h3 {
 	justify-content: center;
 	align-items: center;
 	padding: 40px;
+	background: #f7f7f7;
 }
 .container {
 	max-width: 640px;
 	width: 100%;
-	background: #f7f7f7;
+	background: #ffffff;
 	padding: 40px 56px;
 }
 .container .title {
@@ -208,6 +300,10 @@ h3 {
 	border: none;
 }
 
+.form-control.is-invalid {
+	border-color: red;
+}
+
 .form-group .form-control {
 	width: 100%;
 	background: none;
@@ -226,5 +322,10 @@ h3 {
 	border: none;
 	color: white;
 	background: cornflowerblue;
+}
+
+.invalid-feedback {
+	color: red;
+	margin: 8px 0 0 0;
 }
 </style>
