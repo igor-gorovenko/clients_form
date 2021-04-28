@@ -375,15 +375,20 @@ export default {
 	box-sizing: border-box;
 	border: none;
 }
+
 h1 {
 	font-size: 2.5em;
+	font-weight: 500;
 	line-height: 133%;
 	margin: 16px 0 32px 0;
 }
+
 h3 {
 	font-size: 1.5em;
+	font-weight: 500;
 	margin: 24px 0 24px 0;
 }
+
 .main {
 	display: flex;
 	justify-content: center;
@@ -391,15 +396,12 @@ h3 {
 	padding: 40px;
 	background: #f7f7f7;
 }
+
 .container {
-	max-width: 640px;
+	max-width: 800px;
 	width: 100%;
 	background: #ffffff;
 	padding: 40px 56px;
-}
-.container .title {
-	font-size: 32;
-	font-weight: 500;
 }
 
 .form-group {
@@ -457,5 +459,166 @@ h3 {
 
 .form-group .is-invalid {
 	border-color: red;
+}
+
+@media screen and (max-width: 768px) {
+	h1 {
+		font-size: 2em;
+		margin: 16px 0 24px 0;
+	}
+
+	h3 {
+		font-size: 1.3em;
+		margin: 32px 0 20px 0;
+	}
+
+	.main {
+		padding: 20px;
+	}
+
+	.container {
+		max-width: 800px;
+		width: 100%;
+		background: #ffffff;
+		padding: 20px;
+	}
+
+	.form-group {
+		font-size: 1em;
+		margin: 8px 0 20px 0;
+	}
+
+	.form-group #client {
+		padding: 16px 0 0 16px;
+	}
+
+	.form-group .form-control {
+		width: 100%;
+		background: none;
+		border: 1px solid rgb(178, 178, 189);
+		box-sizing: border-box;
+		height: 40px;
+		padding: 0 0 0 16px;
+		margin: 8px 0 0 0;
+	}
+
+	.button {
+		box-sizing: border-box;
+		margin: 24px 0;
+		width: 100%;
+		height: 56px;
+		border: none;
+		color: white;
+		background: cornflowerblue;
+	}
+
+	.form-group p {
+		margin: 8px 0 0 0;
+		font-size: 1em;
+	}
+
+	.invalid-feedback {
+		color: red;
+	}
+
+	.form-group .is-invalid {
+		border-color: red;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	* {
+		font-size: 16px;
+		line-height: 133%;
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		border: none;
+	}
+
+	h1 {
+		font-size: 1.6em;
+		font-weight: 500;
+		line-height: 133%;
+		margin: 16px 0 24px 0;
+	}
+
+	h3 {
+		font-size: 1.15em;
+		font-weight: 500;
+		margin: 16px 0 16px 0;
+	}
+
+	.main {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0px;
+		background: #fff;
+	}
+
+	.container {
+		max-width: 480px;
+		width: 100%;
+		background: #ffffff;
+		padding: 16px 16px;
+	}
+
+	.form-group {
+		font-size: 1em;
+		width: 100%;
+		margin: 8px 0 16px 0;
+	}
+
+	.form-group #client {
+		height: max-content;
+		padding: 16px 0 0 16px;
+	}
+
+	.form-group.gender label {
+		margin: 0 24px 0 0;
+	}
+
+	.form-group .radio {
+		margin: 0 8px 16px 0;
+	}
+
+	.form-group #checkbox {
+		width: 24px;
+		border: none;
+	}
+
+	.form-group .form-control {
+		width: 100%;
+		background: none;
+		border: 1px solid rgb(178, 178, 189);
+		box-sizing: border-box;
+		height: 44px;
+		padding: 0 0 0 16px;
+		margin: 8px 0 0 0;
+	}
+
+	.button {
+		box-sizing: border-box;
+		margin: 32px 0 24px 0;
+		width: 100%;
+		height: 56px;
+		border: none;
+		color: white;
+		background: cornflowerblue;
+	}
+
+	.form-group p {
+		margin: 8px 0 0 0;
+		font-size: 1em;
+	}
+
+	.invalid-feedback {
+		color: red;
+	}
+
+	.form-group .is-invalid {
+		border-color: red;
+	}
 }
 </style>
